@@ -11,3 +11,6 @@ bin/
 *.exe
 *.pdb
 /LinqToSQL3.Example/connectionstrings.json
+/.vs/slnx.sqlite
+/.vs/Linq2SQL3/v15/.suo
+/.vs

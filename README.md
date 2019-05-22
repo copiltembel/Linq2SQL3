@@ -1,7 +1,7 @@
 Linq To SQL3
 =============
 
-Linq To SQL3 is a fork from Linq To SQL 2. See original here [Wiki](https://github.com/FransBouma/LinqToSQL2/wiki).
+Linq To SQL3 is a fork from Linq To SQL 2. See original here [LinqToSQL2](https://github.com/FransBouma/LinqToSQL2).
 
 This fork brings typed DbIds for primary (and foreign) keys. The idea is to have compile-time check of assignments like:
 

@@ -1,27 +1,37 @@
-Linq To SQL2
+Linq To SQL3
 =============
 
-Official Linq to SQL fork. A complete ORM which is backwards compatible with Linq to SQL but with new features. Please see the [Wiki](https://github.com/FransBouma/LinqToSQL2/wiki) for further information about the progress and design decisions made in this project. For the roadmap/features which are planned, please see the [issues section](https://github.com/FransBouma/LinqToSQL2/issues) for the work items. 
+Linq To SQL3 is a fork from Linq To SQL 2. See original here [Wiki](https://github.com/FransBouma/LinqToSQL2/wiki).
 
-There's no official release yet, as this project has just been started. After every new feature successfully added to the codebase, a new version will be released on Nuget. 
+This fork brings typed DbIds for primary (and foreign) keys. The idea is to have compile-time check of assignments like:
 
-## Does the code in 'Trunk' compile?
+```
+Order.Id = Product.Id; // this will throw a compilation error in this fork, since it's probably not what was intended
+```
 
-(No CI system setup (yet), so we'll have to do with the manually written elements below)
+I've got the inspiration for typed DbIds from here: https://github.com/DigitecGalaxus/Deblazer
 
-It compiles, tests succeed, but the code will be changed a lot internally before the initial compiled release (especially for #6). 
+Deblazer only supports int data type as PK's data type. Linq2SQL3 allows any DB supported type as the underling data type to be used, in a generic way.
 
-## Linq to SQL and this project
+## How to use the example
 
-This project is an official fork from Linq to SQL from the [.NET reference sourcecode](https://github.com/Microsoft/referencesource). As the reference source for .NET doesn't come in compilable form, the resource files for the error strings have been reverse engineered from the official System.Data.Linq assembly.
+1. Get the code
+2. Create a database by running the script LinqToSQL3.Example.DataAccess\Database scripts\CreateDb.sql . Please note that this will create a db user with a default password - use at your own risk.
+2. Create a connectionstrings.json file in LinqToSQL3.Example. This is the expected format:
 
-This project strives to stay 100% backwards compatible with Linq to SQL's query API, so your original Linq to SQL projects will just work with Linq to SQL 2, unless stated otherwise.
+```
+{
+  "DbConnectionStrings": {
+    "Db1": "data source=localhost;User=myuser;Password=*****;Initial Catalog=L2S;User Instance=false;"
+  }
+}
+```
+Replace the password with whatever you used in the previous step. 
 
-### License
+3. Compile & run the LinqToSQL3.Example project.
 
-The original Linq to SQL code is (c) Microsoft Corporation (see License.txt). Additional code added is (c) by the contributors and is marked as such in the code files. 
+# How to use with your own database
 
-### Designer support
-
-This project will offer designer support through [LLBLGen Pro](http://www.llblgen.com)
-
+1. Open the file Linq2SQL3\LinqToSQL3.Example.DataAccess\CreateDbAccess.bat and adjust the parameters to allow the script to connect to your database. 
+2. Run the file from the previous point. This will create the db artifacts of your database (using of course DbId as the PK type) - you need sqlmetal and texttemplate for this - you'll get a pretty good error message if it doesn't work
+3. Add the necessary files to your project (see the example I included). Compile. Be happy.

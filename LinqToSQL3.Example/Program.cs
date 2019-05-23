@@ -15,11 +15,19 @@ namespace LinqToSQL3.Example
         {
             var connectionString = GetConnectionString("connectionstrings.json");
             var dbContext = new DbDataContext(connectionString);
-            //var testTable = dbContext.TestTable1s.ToList();
-            var testTable2 = dbContext.TestTable2s.ToList();
-            var orders = dbContext.Orders.ToList();
-            var items = orders.SelectMany(o => o.Items).ToList();
-            var users = dbContext.Persons.ToList();
+            //InsertSomeEntities(dbContext);
+            TestLoadMany(dbContext);
+
+            ////var testTable = dbContext.TestTable1s.ToList();
+            //var testTable2 = dbContext.TestTable2s.ToList();
+            //var orders = dbContext.Orders.ToList();
+            //var items = orders.SelectMany(o => o.Items).ToList();
+            //var users = dbContext.Persons.ToList();
+        }
+
+        private static void TestLoadMany(DbDataContext dbContext)
+        {
+            var testTable1s = dbContext.TestTable1s.ToList();
         }
 
         static string GetConnectionString(string jsonFileName)
@@ -27,6 +35,18 @@ namespace LinqToSQL3.Example
             var connectionSettings = JsonConvert.DeserializeObject<ConnectionSettings>(File.ReadAllText(jsonFileName));
             var connectionStrings = connectionSettings.DbConnectionStrings.Db1;
             return connectionStrings;
+        }
+
+        static void InsertSomeEntities(DbDataContext dbContext)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                var table1s = new TestTable1();
+                table1s.Dummy = "Testin";
+                table1s.Dummy2 = i;
+                dbContext.GetTable<TestTable1>().InsertOnSubmit(table1s);
+            }
+            dbContext.SubmitChanges();
         }
     }
 }

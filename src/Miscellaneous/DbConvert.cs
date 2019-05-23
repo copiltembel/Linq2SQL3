@@ -244,25 +244,8 @@ namespace System.Data.Linq
             {
                 if (toType.IsGenericType && toType.GetGenericTypeDefinition() == typeof(DbId<,>))
                 {
-                    object myObject = Activator.CreateInstance(toType, value);
-                    return myObject;
-                    //var genericType = typeof(DbId<,>).MakeGenericType(toType.GenericTypeArguments);
-                    //var constructorInfo = genericType.GetConstructors()[0];
-                    //var parameterExpression = Expression.Parameter(toType.GenericTypeArguments[1]);
-                    //var expression = Expression.New(constructorInfo, parameterExpression);
-                    //var conversion = Expression.Convert(expression, typeof(object));
-                    //if (toType.GenericTypeArguments[1] == typeof(int))
-                    //{
-                    //    var instanceCreator = Expression.Lambda<Func<int, object>>(conversion, parameterExpression).Compile();
-                    //    return instanceCreator((int)value);
-                    //}
-                    //else
-                    //{
-                    //    var instanceCreator = Expression.Lambda<Func<Guid, object>>(conversion, parameterExpression).Compile();
-                    //    return instanceCreator((Guid)value);
-                    //}
-                    //var dbEntityType = toType.GenericTypeArguments;
-                    //return CreateDbIdGenericInstance(dbEntityType, value);
+                    object dbIdObject = Activator.CreateInstance(toType, value);
+                    return dbIdObject;
                 }
                 else
                 {
@@ -283,27 +266,6 @@ namespace System.Data.Linq
                     }
                 }
             }
-        }
-
-        static ConcurrentDictionary<Type[], Func<object, object>> dbEntityCreatorCache = new ConcurrentDictionary<Type[], Func<object, object>>();
-
-        static object CreateDbIdGenericInstance(Type[] dbEntityGenericParameterType, object parameter)
-        {
-            var instanceCreator = dbEntityCreatorCache.GetOrAdd(dbEntityGenericParameterType, (type) => { return GetInstanceCreator(type); });
-            return instanceCreator(parameter);
-        }
-
-        private static Func<object, object> GetInstanceCreator(Type[] dbEntityGenericParameterTypes)
-        {
-            var storageType = dbEntityGenericParameterTypes[1];
-
-            var genericType = typeof(DbId<,>).MakeGenericType(dbEntityGenericParameterTypes);
-            var constructorInfo = genericType.GetConstructors()[0];
-            var parameterExpression = Expression.Parameter(storageType);
-            var expression = Expression.New(constructorInfo, parameterExpression);
-            var conversion = Expression.Convert(expression, typeof(object));
-            var instanceCreator = Expression.Lambda<Func<object, object>>(conversion, parameterExpression).Compile();
-            return instanceCreator;
         }
     }
 }

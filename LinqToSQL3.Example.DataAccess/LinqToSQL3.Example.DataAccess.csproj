@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
+    <Compile Include="DbContext.cs" />
     <Compile Include="DbEntity`.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

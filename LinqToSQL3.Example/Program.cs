@@ -1,4 +1,5 @@
 ﻿using Db.DataAccess.DataSet;
+using LinqToSQL3.Example.DataAccess;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace LinqToSQL3.Example
         static void Main(string[] args)
         {
             var connectionString = GetConnectionString("connectionstrings.json");
-            var dbContext = new DbDataContext(connectionString);
-            //InsertSomeEntities(dbContext);
-            TestLoadMany(dbContext);
+            var dbContext = new DbContext(connectionString);
+            InsertSomeEntities(dbContext);
+            //TestLoadMany(dbContext);
 
             ////var testTable = dbContext.TestTable1s.ToList();
             //var testTable2 = dbContext.TestTable2s.ToList();
@@ -25,7 +26,7 @@ namespace LinqToSQL3.Example
             //var users = dbContext.Persons.ToList();
         }
 
-        private static void TestLoadMany(DbDataContext dbContext)
+        private static void TestLoadMany(DbContext dbContext)
         {
             var testTable1s = dbContext.TestTable1s.ToList();
         }
@@ -37,14 +38,14 @@ namespace LinqToSQL3.Example
             return connectionStrings;
         }
 
-        static void InsertSomeEntities(DbDataContext dbContext)
+        static void InsertSomeEntities(DbContext dbContext)
         {
             for (int i = 0; i < 1000; i++)
             {
                 var table1s = new TestTable1();
                 table1s.Dummy = "Testin";
                 table1s.Dummy2 = i;
-                dbContext.GetTable<TestTable1>().InsertOnSubmit(table1s);
+                dbContext.InsertOnSubmit(table1s);
             }
             dbContext.SubmitChanges();
         }

@@ -1,6 +1,6 @@
 Linq To SQL3
 =============
-(this is not maintained anymore - I've switched dev efforts to the [NetCore version](https://github.com/copiltembel/Linq2SQL3NetCore)
+(this is not maintained anymore - I've switched dev efforts to the [NetCore version](https://github.com/copiltembel/Linq2SQL3NetCore))
 
 Linq To SQL3 is a fork from Linq To SQL 2. See original here [LinqToSQL2](https://github.com/FransBouma/LinqToSQL2).
 
